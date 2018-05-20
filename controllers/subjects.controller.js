@@ -57,6 +57,23 @@ router.get('/:id', (req, res) => {
   })
 });
 
+router.get('/:id/relations', (req, res) => {
+  var relationsObj = {}
+  pool.query('select parentid, name from relations inner join subjects on parentid=id where childid=$1', [req.params.id], (err, rows) => {
+    if (err) {
+      throw err;
+    }
+    relationsObj.parents = rows.rows
+    pool.query('select childid, name from relations inner join subjects on childid=id where parentid=$1', [req.params.id], (err, rows) => {
+      if (err) {
+        throw err;
+      }
+      relationsObj.childs = rows.rows
+      res.status(200).send(relationsObj);
+    })
+  })
+});
+
 router.delete('/:id', (req, res) => {
   pool.query('DELETE FROM SUBJECTS WHERE ID=$1', [req.params.id], (err, rows) => {
     if (err){
