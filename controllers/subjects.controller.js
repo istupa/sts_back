@@ -25,8 +25,16 @@ router.post('/', (req, res) => {
   if (!req.body) {
     throw new Error('ERR_MISSING_BODY');
   }
-
-  pool.query('insert into subjects (name) values ($1) RETURNING id;', [req.body.name], (err, resp) => {
+  const sqlQuery = 'insert into subjects ' + 
+  '(name, semester, work_program, control_type, credits, hours_lections, ' + 
+  'hours_labs, hours_seminars, hours_individual, hours_consultations, hours_practice, hours_self, hours_prod) ' +
+  'values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING id;'
+  const sqlArgs = [
+    req.body.name, req.body.semester, req.body.work_program, req.body.control_type, req.body.credits,
+    req.body.hours_lections, req.body.hours_labs, req.body.hours_seminars, req.body.hours_individual, req.body.hours_consultations, 
+    req.body.hours_practice, req.body.hours_self, req.body.hours_prod
+  ]
+  pool.query(sqlQuery, sqlArgs, (err, resp) => {
     if (err) {
        throw err;
     }
