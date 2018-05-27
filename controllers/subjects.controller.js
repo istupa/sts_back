@@ -40,7 +40,6 @@ router.post('/', (req, res) => {
     }
     var newlyCreatedUserId = resp.rows[0].id;
     res.status(200).send(resp);
-    console.log(newlyCreatedUserId);
   });
 });
 
@@ -61,7 +60,7 @@ router.get('/:id', (req, res) => {
       throw err;
     }
 
-    res.status(200).send(rows);
+    res.status(200).send(rows.rows[0]);
   })
 });
 
