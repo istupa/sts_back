@@ -14,11 +14,10 @@
 const express = require('express');
 const router = express.Router();
 const { Pool } = require('pg');
-
-const connectionString
+const config = require('config');
 
 const pool = new Pool({
-  connectionString: connectionString,
+  connectionString: config.get('connectionString'),
 });
 
 router.post('/', (req, res) => {

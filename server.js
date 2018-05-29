@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const config = require('config');
 
 const app = express();
 
@@ -25,4 +26,4 @@ app.use('/relations', relations);
 app.use((err, req, res, next) => res.status(500).send(err.message));
 
 //starting
-app.listen(5000, () => console.log('App listening on port 5000'));
+app.listen(config.get('port'), () => console.log('App listening on port 5000'));
